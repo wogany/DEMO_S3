@@ -31,7 +31,7 @@ void ButtonInterrupt(void)
     KeyState = !digitalRead(KEY_PIN);
 }
 
-/* 初始化按键模块 */
+/* 按键模块初始化 */
 void ButtonInit(void)
 {
     pinMode(KEY_PIN, INPUT_PULLUP);
