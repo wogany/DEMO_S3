@@ -9,6 +9,8 @@ void RgbInit(void)
 {
     RGB.begin();
     RGB.setBrightness(50);
+    RGB.show();
+    RGB.clear();
 }
 
 /* RGBдё©И╡Бйтё╛╨Лблю╤ */

@@ -3,6 +3,7 @@
 #include "_rgb.h"
 #include "_button.h"
 #include "_joystick.h"
+#include "_oled.h"
 
 void setup()
 {
@@ -12,9 +13,10 @@ void setup()
     RgbInit();
     ButtonInit();
     JoyInit();
+    OledInit();
 }
 
 void loop()
 {
-    
+    OledTest();
 }
