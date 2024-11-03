@@ -4,8 +4,10 @@
 #include <Arduino.h>
 
 extern _Bool ButtonStates[2][2];
+extern _Bool KeyState;
 
 void ButtonInit(void);
-int ButtonOnceTest(void);
+int ButtonTest(void);
+int KeyTest(void);
 
 #endif // __BUTTON_H

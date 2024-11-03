@@ -12,6 +12,7 @@ void setup()
 
 void loop()
 {
-    Serial.println(ButtonOnceTest());
+    Serial.print(ButtonTest());
+    Serial.println(KeyTest());
     delay(100);
 }
