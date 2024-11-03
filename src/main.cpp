@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "_led.h"
 #include "_button.h"
+#include "_joystick.h"
 
 void setup()
 {
@@ -8,11 +9,12 @@ void setup()
 
     LedInit();
     ButtonInit();
+    JoyInit();
 }
 
 void loop()
 {
-    Serial.print(ButtonTest());
-    Serial.println(KeyTest());
+    GetJoyValue();
+    Serial.printf("X = %d, Y = %d, SW = %d\n", XValue, YValue, SWState);
     delay(100);
 }
