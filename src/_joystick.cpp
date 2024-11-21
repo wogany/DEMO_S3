@@ -4,7 +4,7 @@ const uint8_t XPIN = 4;
 const uint8_t YPIN = 5;
 const uint8_t SWPIN = 6; // 上拉
 
-uint16_t XValue, YValue;
+uint32_t XValue, YValue;
 _Bool SWState = false;
 
 /* 摇杆初始化 */
