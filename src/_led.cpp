@@ -1,9 +1,11 @@
 #include "_led.h"
 
 const uint8_t LED_CPIN = 8;                   // PNP三极管基极，低电平启用
-const uint8_t LED_OPIN[4] = {11, 12, 13, 14}; // LED阴极，低电平启用
+const uint8_t LED_OPIN[4] = {15, 16, 17, 18}; // LED阴极，低电平启用
 
-/* LED引脚初始化 */
+/*
+    @brief LED引脚初始化
+*/
 void LedInit(void)
 {
     pinMode(LED_CPIN, OUTPUT);
@@ -15,7 +17,9 @@ void LedInit(void)
     }
 }
 
-/* 测试引脚状态，先亮后灭 */
+/*
+    @brief 测试引脚状态，先亮后灭
+*/
 void LedTest(void)
 {
     digitalWrite(LED_CPIN, LOW);
@@ -28,21 +32,9 @@ void LedTest(void)
     delay(1000);
 }
 
-/* 呼吸灯 */
-void LedBreath(void)
-{
-    for (uint8_t i = 0; i < 4; i++)
-    {
-        digitalWrite(LED_OPIN[i], LOW);
-    }
-    for (uint8_t i = 0; i < 256; i++)
-    {
-        analogWrite(LED_CPIN, i);
-        delay(10);
-    }
-}
-
-/* 闪烁灯 */
+/*
+    @brief 闪烁灯
+*/
 void LedFlick(void)
 {
     digitalWrite(LED_CPIN, LOW);

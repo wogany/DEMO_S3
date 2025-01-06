@@ -1,24 +1,28 @@
 #include "_joystick.h"
 
-const uint8_t XPIN = 4;
-const uint8_t YPIN = 5;
-const uint8_t SWPIN = 6; // 上拉
+const uint8_t XPIN = 5;
+const uint8_t YPIN = 4;
+const uint8_t SWPIN = 6; // 按键下拉电阻
 
-uint32_t XValue, YValue;
+uint32_t JoyXValue, JoyYValue;
 _Bool SWState = false;
 
-/* 摇杆初始化 */
+/*
+    @brief 摇杆初始化
+*/
 void JoyInit(void)
 {
     pinMode(XPIN, INPUT);
     pinMode(YPIN, INPUT);
-    pinMode(SWPIN, INPUT_PULLUP);
+    pinMode(SWPIN, INPUT_PULLDOWN);
 }
 
-/* 获取摇杆数值 */
+/*
+    @brief 获取摇杆数值
+*/
 void GetJoyValue(void)
 {
-    XValue = analogRead(XPIN);
-    YValue = analogRead(YPIN);
-    SWState = !digitalRead(SWPIN);
+    JoyXValue = analogRead(XPIN);
+    JoyYValue = analogRead(YPIN);
+    SWState = digitalRead(SWPIN);
 }

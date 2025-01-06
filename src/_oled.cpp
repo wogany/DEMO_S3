@@ -1,11 +1,13 @@
 #include "_oled.h"
 
-const uint8_t SCL_PIN = 2;
-const uint8_t SDA_PIN = 3;
+const uint8_t SCL_PIN = 9;
+const uint8_t SDA_PIN = 10;
 
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE, SCL_PIN, SDA_PIN);
 
-/* OLED初始化 */
+/*
+    @brief OLED初始化
+*/
 void OledInit(void)
 {
     u8g2.begin();
@@ -13,7 +15,9 @@ void OledInit(void)
     u8g2.setFont(u8g2_font_wqy12_t_gb2312);
 }
 
-/* OLED测试 */
+/*
+    @brief OLED测试
+*/
 void OledTest(void)
 {
     u8g2.drawBox(0, 0, 128, 64);

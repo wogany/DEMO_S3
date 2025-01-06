@@ -1,7 +1,7 @@
 #include "_mpu6050.h"
 
-const uint8_t SCL_PIN = 21;
-const uint8_t SDA_PIN = 20;
+const uint8_t SCL_PIN = 9;
+const uint8_t SDA_PIN = 10;
 
 Adafruit_MPU6050 mpu;
 

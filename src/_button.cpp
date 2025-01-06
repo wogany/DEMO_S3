@@ -1,15 +1,15 @@
 #include "_button.h"
 
-const uint8_t ROW_PINS[2] = {36, 37}; // 按键矩阵行引脚，输出
-const uint8_t COL_PINS[2] = {38, 39}; // 按键矩阵列引脚，上拉输入
-const uint8_t KEY_PIN = 16;           // 独立按键引脚， 上拉输入
+const uint8_t ROW_PINS[2] = {12, 11}; // 按键矩阵行引脚，输出
+const uint8_t COL_PINS[2] = {14, 13}; // 按键矩阵列引脚，上拉输入
 
-_Bool ButtonStates[2][2] = {{false, false}, {false, false}};
-_Bool KeyState = false;
+_Bool ButtonStates[2][2] = {{false, false}, {false, false}}; // 按键矩阵状态
 
 hw_timer_t *timer_button = NULL;
 
-/* 更新按键模块状态，定时器中断函数 */
+/*
+    @brief 更新按键模块状态（定时器中断函数）
+*/
 void ButtonInterrupt(void)
 {
     for (uint8_t r = 0; r < 2; r++)
@@ -27,14 +27,13 @@ void ButtonInterrupt(void)
 
         digitalWrite(ROW_PINS[r], HIGH); // 关闭行
     }
-
-    KeyState = !digitalRead(KEY_PIN);
 }
 
-/* 按键模块初始化 */
+/*
+    @brief 按键模块初始化
+*/
 void ButtonInit(void)
 {
-    pinMode(KEY_PIN, INPUT_PULLUP);
     for (uint8_t i = 0; i < 2; i++)
     {
         pinMode(ROW_PINS[i], OUTPUT);
@@ -47,14 +46,14 @@ void ButtonInit(void)
     timerAlarmEnable(timer_button);                            // 启动定时器
 }
 
-/* 
-    按键矩阵测试
-
-    0 -> [0][0]
-    1 -> [0][1]
-    2 -> [1][0]
-    3 -> [1][1]
-    4 -> 未按下
+/*
+    @brief 按键矩阵测试
+    @return 所按按键
+    @retval 0 按键[0][0]
+    @retval 1 按键[0][1]
+    @retval 2 按键[1][0]
+    @retval 3 按键[1][1]
+    @retval 4 未按下按键
  */
 int ButtonTest(void)
 {
@@ -69,15 +68,4 @@ int ButtonTest(void)
         }
     }
     return 4;
-}
-
-/*
-    独立按键测试
-    
-    0 -> 未按下
-    1 -> 已按下
- */
-int KeyTest(void)
-{
-    return KeyState;
 }

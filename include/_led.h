@@ -5,7 +5,6 @@
 
 void LedInit(void);
 void LedTest(void);
-void LedBreath(void);
 void LedFlick(void);
 
 #endif // __LED_H

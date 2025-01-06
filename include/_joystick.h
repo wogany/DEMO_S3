@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-extern uint32_t XValue, YValue;
+extern uint32_t JoyXValue, JoyYValue;
 extern _Bool SWState;
 
 void JoyInit(void);
