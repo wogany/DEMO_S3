@@ -20,6 +20,5 @@ void setup()
 
 void loop()
 {
-
-    delay(10);
+    GluttonousSnake(&ButtonStates[0][0], &ButtonStates[0][1], &ButtonStates[1][0], &ButtonStates[1][1]);
 }
