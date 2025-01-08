@@ -246,7 +246,7 @@ void GluttonousSnake(_Bool ButtonStates[2][2], _Bool JoyStates[4], void (*JoyUpd
         u8g2.drawStr(30, 55, "Any Key Skip");
         u8g2.sendBuffer();
 
-        delay(500);
+        delay(100);
         do
         {
             if (KeyUp || KeyLeft || KeyDown || KeyRight)
@@ -254,5 +254,6 @@ void GluttonousSnake(_Bool ButtonStates[2][2], _Bool JoyStates[4], void (*JoyUpd
                 IsGameOver = false;
             }
         } while (IsGameOver);
+        delay(200);
     }
 }
