@@ -13,12 +13,12 @@ void setup()
     // LedInit();
     // RgbInit();
     ButtonInit();
-    // JoyInit();
+    JoyInit();
     OledInit();
     // MpuInit();
 }
 
 void loop()
 {
-    GluttonousSnake(&ButtonStates[0][0], &ButtonStates[0][1], &ButtonStates[1][0], &ButtonStates[1][1]);
+    GluttonousSnake(ButtonStates, JoyStates, JoyUpdate);
 }

@@ -6,6 +6,6 @@
 
 void OledInit(void);
 void OledTest(void);
-void GluttonousSnake(_Bool *UP, _Bool *Down, _Bool *Left, _Bool *Right);
+void GluttonousSnake(_Bool ButtonState[2][2], _Bool JoyStates[4],  void(*JoyUpdate)(void));
 
 #endif // __OLED_H

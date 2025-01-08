@@ -42,7 +42,7 @@ void ButtonInit(void)
 
     timer_button = timerBegin(0, 80, true);                    // 初始化定时器
     timerAttachInterrupt(timer_button, ButtonInterrupt, true); // 配置中断函数
-    timerAlarmWrite(timer_button, 200, true);                  // 设置定时模式
+    timerAlarmWrite(timer_button, 120, true);                  // 设置定时模式
     timerAlarmEnable(timer_button);                            // 启动定时器
 }
 

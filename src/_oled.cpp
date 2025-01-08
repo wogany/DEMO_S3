@@ -60,12 +60,11 @@ void SnakeGameInterface(uint8_t GradeVal, uint8_t LevelVal, uint8_t SnakeCrood[1
 
 /*
     @brief 贪吃蛇游戏
-    @param Up 向上按键
-    @param Left 向左按键
-    @param Down 向下按键
-    @param Right 向右按键
+    @param ButtonStates[2][2] 按键状态
+    @param JoyStates[4] 摇杆状态
+    @param JoyUpdate() 摇杆状态更新函数
 */
-void GluttonousSnake(_Bool *Up, _Bool *Left, _Bool *Down, _Bool *Right)
+void GluttonousSnake(_Bool ButtonStates[2][2], _Bool JoyStates[4], void (*JoyUpdate)(void))
 {
     uint8_t Grade = 0, Level = 1;
     uint8_t SnakeCoord[100][2] = {{2}, {2}}; // 蛇身坐标集
@@ -82,6 +81,9 @@ void GluttonousSnake(_Bool *Up, _Bool *Left, _Bool *Down, _Bool *Right)
     Direction SnakeMoveState = GoDown; // 贪吃蛇移动方向
     _Bool IsGameOver = false;
 
+    _Bool &KeyUp = ButtonStates[0][0], &KeyLeft = ButtonStates[0][1], &KeyDown = ButtonStates[1][0], &KeyRight = ButtonStates[1][1];
+    _Bool &JoyUp = JoyStates[0], &JoyLeft = JoyStates[1], &JoyDown = JoyStates[2], &JoyRight = JoyStates[3];
+
     /* 初始化游戏界面 */
     u8g2.setFont(u8g2_font_wqy12_t_gb2312);
     SnakeGameInterface(Grade, Level, SnakeCoord, SnakeLen, FoodCoord);
@@ -89,26 +91,29 @@ void GluttonousSnake(_Bool *Up, _Bool *Left, _Bool *Down, _Bool *Right)
     /* 游戏正常运行 */
     do
     {
+        /* 更新摇杆状态 */
+        JoyUpdate();
+
         /* 更新贪吃蛇运动方向 */
-        if ((*Up + *Left + *Down + *Right) > 1)
+        if ((KeyUp || JoyUp + KeyLeft || JoyLeft + KeyDown || JoyDown + KeyRight || JoyRight) > 1)
         {
             ;
         }
         else
         {
-            if (*Up && SnakeMoveState != GoDown)
+            if ((KeyUp || JoyUp) && SnakeMoveState != GoDown)
             {
                 SnakeMoveState = GoUp;
             }
-            else if (*Down && SnakeMoveState != GoUp)
+            else if ((KeyDown || JoyDown) && SnakeMoveState != GoUp)
             {
                 SnakeMoveState = GoDown;
             }
-            else if (*Left && SnakeMoveState != GoRight)
+            else if ((KeyLeft || JoyLeft) && SnakeMoveState != GoRight)
             {
                 SnakeMoveState = GoLeft;
             }
-            else if (*Right && SnakeMoveState != GoLeft)
+            else if ((KeyRight || JoyRight) && SnakeMoveState != GoLeft)
             {
                 SnakeMoveState = GoRight;
             }
@@ -223,7 +228,7 @@ void GluttonousSnake(_Bool *Up, _Bool *Left, _Bool *Down, _Bool *Right)
         u8g2.clearBuffer();
         SnakeGameInterface(Grade, Level, SnakeCoord, SnakeLen, FoodCoord);
         u8g2.sendBuffer();
-        delay(140 - 10 * Level);
+        delay(120 * pow(0.86, Level - 1));
     } while (!IsGameOver);
 
     /* 游戏结束界面 */
@@ -238,13 +243,13 @@ void GluttonousSnake(_Bool *Up, _Bool *Left, _Bool *Down, _Bool *Right)
         u8g2.drawStr(82, 15, GradeStr);
         u8g2.drawStr(42, 31, "Level");
         u8g2.drawStr(82, 31, LevelStr);
-        u8g2.drawStr(32, 55, "Any Key Skip");
+        u8g2.drawStr(30, 55, "Any Key Skip");
         u8g2.sendBuffer();
 
         delay(500);
         do
         {
-            if (*Up || *Down || *Left || *Right)
+            if (KeyUp || KeyLeft || KeyDown || KeyRight)
             {
                 IsGameOver = false;
             }
