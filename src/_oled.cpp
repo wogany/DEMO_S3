@@ -3,6 +3,8 @@
 const uint8_t SCL_PIN = 9;
 const uint8_t SDA_PIN = 10;
 
+const uint8_t MAINMENU_MAX = 3;
+
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE, SCL_PIN, SDA_PIN);
 
 /*
@@ -63,14 +65,16 @@ void SnakeGameInterface(uint8_t GradeVal, uint8_t LevelVal, uint8_t SnakeCrood[1
     @param ButtonStates[2][2] 按键状态
     @param JoyStates[4] 摇杆状态
     @param JoyUpdate() 摇杆状态更新函数
+    @retval true 游戏继续
+    @retval false 游戏结束
 */
-void GluttonousSnake(_Bool ButtonStates[2][2], _Bool JoyStates[4], void (*JoyUpdate)(void))
+_Bool GluttonousSnake(_Bool ButtonStates[2][2], _Bool JoyStates[4], void (*JoyUpdate)(void))
 {
     uint8_t Grade = 0, Level = 1;
     uint8_t SnakeCoord[100][2] = {{2}, {2}}; // 蛇身坐标集
     uint8_t SnakeHead[2] = {2, 2};           // 蛇头坐标
     uint8_t SnakeLen = 1;                    // 贪吃蛇长度
-    uint8_t FoodCoord[2] = {2, 4};           // 食物坐标
+    uint8_t FoodCoord[2] = {4, 2};           // 食物坐标
     typedef enum
     {
         GoUp = 0,
@@ -78,7 +82,7 @@ void GluttonousSnake(_Bool ButtonStates[2][2], _Bool JoyStates[4], void (*JoyUpd
         GoRight,
         GoDown
     } Direction;
-    Direction SnakeMoveState = GoDown; // 贪吃蛇移动方向
+    Direction SnakeMoveState = GoRight; // 贪吃蛇移动方向
     _Bool IsGameOver = false;
 
     _Bool &KeyUp = ButtonStates[0][0], &KeyLeft = ButtonStates[0][1], &KeyDown = ButtonStates[1][0], &KeyRight = ButtonStates[1][1];
@@ -243,17 +247,76 @@ void GluttonousSnake(_Bool ButtonStates[2][2], _Bool JoyStates[4], void (*JoyUpd
         u8g2.drawStr(82, 15, GradeStr);
         u8g2.drawStr(42, 31, "Level");
         u8g2.drawStr(82, 31, LevelStr);
-        u8g2.drawStr(30, 55, "Any Key Skip");
+        u8g2.drawStr(12, 55, "GoBack <- -> GoOn");
         u8g2.sendBuffer();
 
         delay(100);
         do
         {
-            if (KeyUp || KeyLeft || KeyDown || KeyRight)
+            delay(10);
+            if (KeyLeft)
             {
-                IsGameOver = false;
+                return false;
             }
-        } while (IsGameOver);
-        delay(200);
+            else if (KeyRight)
+            {
+                return true;
+            }
+        } while (1);
     }
+}
+
+/*
+    @brief 主菜单（一级）
+    @param MainFlag 主菜单标志位，作为菜单选项指示
+    @param ButtonStates[2][2] 按键状态
+    @return 所处菜单选项
+*/
+int MainMenu(uint8_t &MainFlag, _Bool ButtonStates[2][2])
+{
+    _Bool &Up = ButtonStates[0][0], &Left = ButtonStates[0][1], &Down = ButtonStates[1][0], &Right = ButtonStates[1][1];
+    u8g2.setFont(u8g2_font_wqy16_t_gb2312);
+
+    /* 主菜单正常运行 */
+    do
+    {
+        /* 判断标志位是否移动 */
+        if (Up + Left + Down + Right > 1)
+        {
+            ;
+        }
+        else
+        {
+            if (Up && MainFlag > 1)
+            {
+                MainFlag--;
+            }
+            else if (Down && MainFlag < MAINMENU_MAX)
+            {
+                MainFlag++;
+            }
+            else if (Right)
+            {
+                return MainFlag;
+            }
+        }
+
+        u8g2.clearBuffer();
+
+        /* 绘制基本界面 */
+        u8g2.drawStr(40, 17, "GameTime");
+        u8g2.drawStr(40, 37, "LED");
+        u8g2.drawStr(40, 57, "RGB");
+        u8g2.drawFrame(20, 5, 12, 12);
+        u8g2.drawFrame(20, 25, 12, 12);
+        u8g2.drawFrame(20, 45, 12, 12);
+
+        /* 绘制菜单指针指示 */
+        u8g2.drawBox(20, 20 * MainFlag - 15, 12, 12);
+
+        u8g2.sendBuffer();
+        delay(100);
+    } while (1);
+
+    return 0;
 }

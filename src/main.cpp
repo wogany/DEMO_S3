@@ -6,6 +6,8 @@
 #include "_oled.h"
 // #include "_mpu6050.h"
 
+uint8_t MainFlag = 1;
+
 void setup()
 {
     Serial.begin(115200);
@@ -20,5 +22,20 @@ void setup()
 
 void loop()
 {
-    GluttonousSnake(ButtonStates, JoyStates, JoyUpdate);
+    MainMenu(MainFlag, ButtonStates);
+    delay(10);
+    switch (MainFlag)
+    {
+    case 1:
+        _Bool IsGameGoOn;
+        do
+        {
+            IsGameGoOn = GluttonousSnake(ButtonStates, JoyStates, JoyUpdate);
+        } while(IsGameGoOn);
+        delay(100);
+        break;
+    default:
+        ;
+        break;
+    }
 }
